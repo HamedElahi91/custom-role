@@ -30,7 +30,12 @@ class Custom_Role_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		if (! empty( $GLOBALS['wp_roles']->is_role( "Major buyer" ))){
+			$GLOBALS['wp_roles']->remove_role("Major buyer");
+		}
+		if (! empty( $GLOBALS['wp_roles']->is_role( "Fixed customer" ))){
+			$GLOBALS['wp_roles']->remove_role("Fixed customer");
+		}
 	}
 
 }

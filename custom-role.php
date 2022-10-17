@@ -24,12 +24,10 @@
  * Text Domain:       custom-role
  * Domain Path:       /languages
  */
-echo 'hi';
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
@@ -55,7 +53,7 @@ function deactivate_custom_role() {
 	Custom_Role_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_custom_role' );
+register_activation_hook( __FILE__ , 'activate_custom_role' );
 register_deactivation_hook( __FILE__, 'deactivate_custom_role' );
 
 /**
