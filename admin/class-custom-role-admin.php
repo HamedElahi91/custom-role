@@ -74,6 +74,8 @@ class Custom_Role_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/custom-role-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style('jquery-datatables-css','//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css');
+
 
 	}
 
@@ -96,8 +98,12 @@ class Custom_Role_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/custom-role-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/custom-role-admin.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'ajax_script', plugin_dir_url( __FILE__ ) . 'js/test.js', array( 'jquery' ), $this->version, true );
+		wp_localize_script( 'ajax_script', 'my_ajax_object',
+			array( 'ajax_url' => admin_url('admin-ajax.php' ) ) );
+        wp_enqueue_script('jquery-datatables-js','//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js',array('jquery'));
 	}
 	
 }
+ 

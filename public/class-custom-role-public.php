@@ -99,5 +99,5 @@ class Custom_Role_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/custom-role-public.js', array( 'jquery' ), $this->version, false );
 
 	}
-
+	
 }
