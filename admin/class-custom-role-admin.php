@@ -103,6 +103,7 @@ class Custom_Role_Admin {
 		wp_localize_script( 'ajax_script', 'my_ajax_object',
 			array( 'ajax_url' => admin_url('admin-ajax.php' ) ) );
         wp_enqueue_script('jquery-datatables-js','//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js',array('jquery'));
+
 	}
 	
 }

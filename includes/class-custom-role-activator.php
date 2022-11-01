@@ -45,6 +45,8 @@ class Custom_Role_Activator {
 			$wp_roles->add_role($Fixed_Customer_role, 'مشتری ثابت', $customer_caps->capabilities);
 		}
 
+
+
 	}
 
 }

@@ -97,7 +97,29 @@ class Custom_Role_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/custom-role-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( 'custom-role-checkbox', plugin_dir_url( __FILE__ ) . 'js/custom-role-checkbox.js', array( 'jquery' ), null, true );
+		wp_localize_script( 'custom-role-checkbox', 'my_ajax_url',
+			array( 'ajax_url' => admin_url('admin-ajax.php' ) ) );
+		
+			
 	}
-	
+
+	public function login_enqueue_scripts() {
+		wp_enqueue_script( 'add_custom_role_checkbox', plugin_dir_url( __FILE__ ) . 'js/custom-role-checkbox.js', array( 'jquery' ), '1', false );
+	}
+
+	public function custom_role_register_major_buyer_function(){
+		wp_send_json([
+			'success' => true,
+			'msg' => $_POST['user_email']	
+		]);
+		return "success";
+	}
+	public function custom_role_register_fixed_customer_function(){
+		wp_send_json([
+			'success' => true,
+			'msg' => $_POST['user_email']		
+		]);
+		return "success";
+	}
 }
