@@ -184,8 +184,8 @@ class Custom_Role
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 		$this->loader->add_action('login_enqueue_scripts', $plugin_public, 'login_enqueue_scripts');
-		$this->loader->add_action('wp_ajax_nopriv_custom_role_register_major_buyer', $plugin_public, 'custom_role_register_major_buyer_function');
-		$this->loader->add_action('wp_ajax_nopriv_custom_role_register_fixed_customer', $plugin_public, 'custom_role_register_fixed_customer_function');
+		$this->loader->add_action('wp_ajax_nopriv_custom_role_register_request_major_buyer', $plugin_public, 'custom_role_register_requset_major_buyer_function');
+		$this->loader->add_action('wp_ajax_nopriv_custom_role_register_request_fixed_customer', $plugin_public, 'custom_role_register_request_fixed_customer_function');
 		
 	}
 

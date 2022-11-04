@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(window).ready(function($) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const params = urlParams.get('action');
@@ -12,17 +12,23 @@ jQuery(document).ready(function($) {
     $(document).on('click', 'input[type="checkbox"]', function() {
         $('input[type="checkbox"]').not(this).prop('checked', false);
     });
-    $("button[name='register']").click(function() {
-        var user_email = $('#reg_email').val();
-        if (null != user_email && $('#fixed_customer').is(":checked")) {
 
+    $("button[name='register']").click(function() {
+
+        var user_email = $('#reg_email').val();
+
+        if (null != user_email && $('#fixed_customer').is(":checked")) {
+            console.log('fixed_customer');
             $.ajax({
                 type: "post",
                 url: my_ajax_url.ajax_url,
                 dataType: 'json',
                 data: {
-                    action: 'custom_role_register_fixed_customer',
+                    action: 'custom_role_register_request_fixed_customer',
                     user_email: user_email
+                },
+                success: function(response) {
+                    console.log(response);
                 }
             });
         }
@@ -30,12 +36,22 @@ jQuery(document).ready(function($) {
             $.ajax({
                 type: "post",
                 url: my_ajax_url.ajax_url,
+                dataType: 'json',
                 data: {
-                    action: 'custom_role_register_major_buyer',
+                    action: 'custom_role_register_request_major_buyer',
                     user_email: user_email
+                },
+                success: function(response) {
+                    console.log(response);
+
                 }
             });
         }
 
     });
+    // $("button[name='register']").click(function() {
+
+
+    // });
+
 });

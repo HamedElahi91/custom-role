@@ -108,18 +108,45 @@ class Custom_Role_Public {
 		wp_enqueue_script( 'add_custom_role_checkbox', plugin_dir_url( __FILE__ ) . 'js/custom-role-checkbox.js', array( 'jquery' ), '1', false );
 	}
 
-	public function custom_role_register_major_buyer_function(){
-		wp_send_json([
-			'success' => true,
-			'msg' => $_POST['user_email']	
+	
+	function custom_role_register_requset_major_buyer_function(){  
+		global $wpdb;
+		$major_buyer_table_name = $wpdb->prefix . "customer_requests_custom_role_table";
+		$new_user_email = $_POST['user_email'];
+	
+		if(email_exists($new_user_email)){
+		$major_buyer_customer = get_user_by( 'email', $new_user_email );
+		$wpdb->insert( $major_buyer_table_name, array(
+		'customerid' => $major_buyer_customer->ID,
+		'username' => $major_buyer_customer->user_email,
+		'request_type' => 'major_buyer'
+		));
+		
+		}
+		wp_send_json( [
+		'customerid' =>$major_buyer_customer->ID,
+		'username' =>$major_buyer_customer->user_email
 		]);
-		return "success";
-	}
-	public function custom_role_register_fixed_customer_function(){
-		wp_send_json([
-			'success' => true,
-			'msg' => $_POST['user_email']		
-		]);
-		return "success";
-	}
+	
+      }
+
+	function custom_role_register_request_fixed_customer_function(){
+		global $wpdb;
+		$new_user_email = $_POST['user_email'];
+		$fixed_customer_table_name = $wpdb->prefix . "customer_requests_custom_role_table";
+		if(email_exists($new_user_email)){
+		$fixed_customer_customer = get_user_by( 'email', $new_user_email );
+		$wpdb->insert( $fixed_customer_table_name, array(
+		'customerid' => $fixed_customer_customer->ID,
+		'username' => $fixed_customer_customer->user_email,
+		'request_type' => 'fixed_customer'
+		));
+		}
+		wp_send_json( [
+		'customerid' =>$fixed_customer_customer->ID,
+		'username' =>$fixed_customer_customer->user_email
+		] );
+      }
+    
+
 }
