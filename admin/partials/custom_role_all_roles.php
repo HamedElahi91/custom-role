@@ -110,16 +110,6 @@ function custom_role_show_fixed_customer_func(){
   <?php
 }
 function custom_role_show_requests_func(){
-<<<<<<< HEAD
-  echo '<div style = "font-size: 200%;margin: 10px;text-align: center;background-color: white;padding: 10px;border-radius: 28px;">Requests</div>';
-  ?>
-              <div>
-                    <h1>
-                          hello
-                    </h1>
-              </div>
-        <?php
-=======
   ?>
     <div style = "font-size: 200%;margin: 10px;text-align: center;background-color: white;padding: 10px;border-radius: 28px;"> 
       <?php echo esc_html( get_admin_page_title() ); ?>
@@ -209,7 +199,6 @@ function custom_role_show_requests_func(){
       </div>
     </div>
   <?php
->>>>>>> main
 }
 
 function custom_role_show_settings_func(){
