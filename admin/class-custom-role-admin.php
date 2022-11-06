@@ -100,10 +100,45 @@ class Custom_Role_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/custom-role-admin.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'ajax_script', plugin_dir_url( __FILE__ ) . 'js/test.js', array( 'jquery' ), $this->version, true );
-		wp_localize_script( 'ajax_script', 'my_ajax_object',
-			array( 'ajax_url' => admin_url('admin-ajax.php' ) ) );
-        wp_enqueue_script('jquery-datatables-js','//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js',array('jquery'));
+		wp_localize_script( 'ajax_script', 'my_ajax_object', array( 'ajax_url' => admin_url('admin-ajax.php' ) ) );
+        	wp_enqueue_script('jquery-datatables-js','//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js',array('jquery'));
+        	wp_enqueue_script('custom_role_confirm_actions', plugin_dir_url( __FILE__ ) . 'js/custom_role_confirm_requests.js' ,array('jquery'), null, true);
 
+
+	
+
+	}
+
+	public function receive_customer_requests_function(){
+		$customer_id = $_POST['customerid'];
+		$request_type = $_POST['type'];
+		$user = get_user_by( 'id', $customer_id );
+		global $wpdb;
+		switch ($request_type){
+			case "confirm_major_buyer":
+				$user->set_role('Major buyer');
+				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
+				break;
+			
+			case "refuse_major_buyer":
+				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
+				break;
+
+			case "confirm_fixed_customer":
+				$user->set_role('Fixed customer');
+				
+				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
+				break;
+			case "refuse_fixed_customer":
+				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
+				break;
+			default:
+
+		}
+		 
+		wp_json_encode( array(
+			"success" =>"yes"
+		) );
 	}
 	
 }

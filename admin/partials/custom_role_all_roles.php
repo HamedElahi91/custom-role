@@ -152,9 +152,9 @@ function custom_role_show_requests_func(){
                   <td><?php echo $row->username ; ?></td>
                   <td><?php echo $row->customerid ; ?></td>
                   <td>
-                      <a href="#" class= "confirm-requests" id="conf_major_buyer" >confirm</a>
+                      <a href="#" data-customerid="<?php echo $row->customerid ?>" data-action="confirm_major_buyer" class= "action-requests">confirm</a>
                       ||
-                      <a href="#" class= "confirm-requests" id="refuse_major_buyer">refuse</a>
+                      <a href="#" data-customerid="<?php echo $row->customerid ?>" data-action="refuse_major_buyer" class= "action-requests">refuse</a>
                   </td>
                 </tr>
                 <?php endforeach ?>    
@@ -182,9 +182,9 @@ function custom_role_show_requests_func(){
                   <td><?php echo $row->username ; ?></td>
                   <td><?php echo $row->customerid ; ?></td>
                   <td>
-                      <a href="#" class= "confirm-requests" id="conf_fixed_customer">confirm</a>
+                      <a href="#" data-customerid="<?php echo $row->customerid ?>" data-action="confirm_fixed_customer" class= "action-requests" >confirm</a>
                       ||
-                      <a href="#" class= "confirm-requests" id="refuse_fixed_customer">refuse</a>
+                      <a href="#" data-customerid="<?php echo $row->customerid ?>" data-action="refuse_fixed_customer" class= "action-requests" >refuse</a>
                   </td>
                 </tr>
                 <?php endforeach ?>    
@@ -205,56 +205,6 @@ function custom_role_show_settings_func(){
   echo '<div style = "font-size: 200%;margin: 10px;text-align: center;background-color: white;padding: 10px;border-radius: 28px;">Settings</div>';
 }
 
-
-function custom_role_show_datatable(){
- ?>
-  <table id="example">
-    <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-    </thead>
-    <tbody></tbody>
-  </table>
- <?php
-}
-
-
-// function custom_role_register_requset_major_buyer_function(){  
-//   global $wpdb;
-//   $major_buyer_table_name = $wpdb->prefix . "customer_requests_custom_role_table";
-//   $new_user_email = $_POST['user_email'];
-
-//   if(email_exists($new_user_email)){
-//   $major_buyer_customer = get_user_by( 'email', $new_user_email );
-//   $wpdb->insert( $major_buyer_table_name, array(
-//   'customerid' => $major_buyer_customer->ID,
-//   'username' => $major_buyer_customer->user_email,
-//   'request_type' => 'major_buyer'
-//   ));
-  
-//   }
-//   wp_send_json( [
-//   'customerid' =>$major_buyer_customer->ID,
-//   'username' =>$major_buyer_customer->user_email
-//   ]);
-
-//     }
-
-// function custom_role_register_request_fixed_customer_function(){
-//   //   global $wpdb;
-//   //   $new_user_email = $_POST['user_email'];
-//   //   $fixed_customer_table_name = $wpdb->prefix . "customer_requests_custom_role_table";
-//   //   if(email_exists($new_user_email)){
-//   //     $fixed_customer_customer = get_user_by( 'email', $new_user_email );
-//   //     $wpdb->insert( $fixed_customer_table_name, array(
-//   //       'customerid' => $fixed_customer_customer->ID,
-//   //       'username' => $fixed_customer_customer->user_email,
-//   //       'request_type' => 'fixed_customer'
-//   //       ));
-//   //   }
-
-// }
 
 
 
