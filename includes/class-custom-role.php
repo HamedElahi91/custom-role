@@ -167,6 +167,8 @@ class Custom_Role
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 		$this->loader->add_action('wp_ajax_receive_customer_requests', $plugin_admin, 'receive_customer_requests_function');
+		$this->loader->add_action('set_user_role', $plugin_admin, 'change_user_role_manually_function',10,2 ); 
+		
 		
 	}
 
@@ -233,4 +235,6 @@ class Custom_Role
 	{
 		return $this->version;
 	}
+
+	
 }

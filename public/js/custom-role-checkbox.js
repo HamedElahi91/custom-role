@@ -14,11 +14,10 @@ jQuery(window).ready(function($) {
     });
 
     $("button[name='register']").click(function() {
-
         var user_email = $('#reg_email').val();
 
         if (null != user_email && $('#fixed_customer').is(":checked")) {
-            //console.log('fixed_customer');
+
             $.ajax({
                 type: "post",
                 url: my_ajax_url.ajax_url,
@@ -28,11 +27,12 @@ jQuery(window).ready(function($) {
                     user_email: user_email
                 },
                 success: function(response) {
-                    //console.log(response);
+                    // console.log(response);
                 }
             });
         }
         if (null != user_email && $('#major_buyer').is(":checked")) {
+
             $.ajax({
                 type: "post",
                 url: my_ajax_url.ajax_url,
@@ -42,16 +42,12 @@ jQuery(window).ready(function($) {
                     user_email: user_email
                 },
                 success: function(response) {
-                    //console.log(response);
+                    // console.log(response);
 
                 }
             });
         }
 
     });
-    // $("button[name='register']").click(function() {
-
-
-    // });
 
 });

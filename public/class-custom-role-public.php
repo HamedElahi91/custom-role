@@ -111,7 +111,7 @@ class Custom_Role_Public {
 	
 	function custom_role_register_requset_major_buyer_function(){  
 		global $wpdb;
-		$major_buyer_table_name = $wpdb->prefix . "customer_requests_custom_role_table";
+		$major_buyer_table_name = $wpdb->prefix . 'customer_requests_custom_role_table';
 		$new_user_email = $_POST['user_email'];
 	
 		if(email_exists($new_user_email)){

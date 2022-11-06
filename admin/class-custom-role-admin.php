@@ -140,6 +140,28 @@ class Custom_Role_Admin {
 			"success" =>"yes"
 		) );
 	}
+
+	public function change_user_role_manually_function($user_id, $role){
+		global $wpdb;
+		$custom_role_major_customer_table_name = $wpdb->prefix . 'major_buyer_custom_role_table';
+		$custom_role_fixed_customer_table_name = $wpdb->prefix . 'fixed_customer_custom_role_table';
+		$current_user_email = get_user_by( 'id', $user_id )->user_email;
+		switch ($role){
+			case "Major buyer":
+				$wpdb->insert($custom_role_major_customer_table_name, array(
+					'customerid' => $user_id,
+					'username' => $current_user_email
+				));
+				break;
+			case "Fixed customer":
+				$wpdb->insert($custom_role_fixed_customer_table_name, array(
+					'customerid' => $user_id,
+					'username' => $current_user_email
+				));
+				break;
+		
+		}
+	}
 	
 }
  
