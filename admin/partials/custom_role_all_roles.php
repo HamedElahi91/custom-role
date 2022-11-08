@@ -15,6 +15,7 @@ function custom_role_show_major_customer_func(){
       <th>Name</th>
       <th>number</th>
       <th>Purchase</th>
+      <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -48,6 +49,7 @@ function custom_role_show_major_customer_func(){
                       
                     ?>
                 </td>
+                <td><a href="" class="action-btn action-btn-major-buyer" data-customer-id="<?php echo $user->ID;?>" data-customer-type="major_buyer"> Remove <i class="fa fa-remove" style="font-size: 150%;"></i> </a></td>
                 
               </tr>
           <?php endforeach  ?>
@@ -71,6 +73,7 @@ function custom_role_show_fixed_customer_func(){
       <th>Name</th>
       <th>number</th>
       <th>Purchase</th>
+      <th>Action</th>
     </tr>
     </thead>
         <?php foreach($users as $user): ?>
@@ -103,7 +106,8 @@ function custom_role_show_fixed_customer_func(){
                       
                     ?>
                 </td>
-                
+                <td><a href="" class="action-btn action-btn-fixed-customer" data-customer-id="<?php echo $user->ID;?>" data-customer-type="fixed_customer"> Remove <i class="fa fa-remove" style="font-size: 150%;"></i> </a></td>
+
               </tr>
           <?php endforeach ?>    
   </table>
@@ -201,11 +205,42 @@ function custom_role_show_requests_func(){
   <?php
 }
 
+
 function custom_role_show_settings_func(){
   echo '<div style = "font-size: 200%;margin: 10px;text-align: center;background-color: white;padding: 10px;border-radius: 28px;">Settings</div>';
 }
 
+function custom_role_define_customers_func(){
+  echo 'define customers here';
+}
+function custom_role_discounts_func(){
+  $default_tab = 'major-buyer-discounts';
+  $tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
+  global $wpdb;
+  ?>
+  <div class="wrap">    
+      <!-- Here are our tabs -->
+      <nav class="nav-tab-wrapper">
+        <a href="?page=discounts.php&tab=major-buyer-discounts" class="nav-tab <?php if($tab=='major-buyer-discounts'):?>nav-tab-active<?php endif; ?>">Major Buyers discounts</a>
+        <a href="?page=discounts.php&tab=fixed-customer-discounts" class="nav-tab <?php if($tab=='fixed-customer-discounts'):?>nav-tab-active<?php endif; ?>">Fixed Customer discounts</a>
+        
+      </nav>
 
+      <div class="tab-content">
+      <?php switch($tab) {
+        case 'major-buyer-discounts':
+          break;
+        case 'fixed-customer-discounts':
+          echo 'fixed_customer_discounts';
+          break;
+        default:
+          echo 'Default tab';
+          break;
+        } ?>
+      </div>
+    </div>
+  <?php
+}
 
 
 

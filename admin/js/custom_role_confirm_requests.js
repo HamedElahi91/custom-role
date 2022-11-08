@@ -1,7 +1,8 @@
 jQuery(document).ready(function($) {
     $('.action-requests').click(function(e) {
         e.preventDefault();
-        console.log($(this).data('customerid'));
+        var $this = $(this);
+        //console.log($(this).data('customerid'));
         switch ($(this).data('action')) {
             case "confirm_major_buyer":
                 $.ajax({
@@ -14,7 +15,7 @@ jQuery(document).ready(function($) {
                     },
                     dataType: "json",
                     success: function(response) {
-                        console.log(response.success);
+                        $this.closest('tr').remove();
                     }
                 });
                 break;
@@ -29,7 +30,7 @@ jQuery(document).ready(function($) {
                     },
                     dataType: "json",
                     success: function(response) {
-
+                        $this.closest('tr').remove();
                     }
                 });
                 break;
@@ -44,7 +45,7 @@ jQuery(document).ready(function($) {
                     },
                     dataType: "json",
                     success: function(response) {
-
+                        $this.closest('tr').remove();
                     }
                 });
                 break;
@@ -59,7 +60,7 @@ jQuery(document).ready(function($) {
                     },
                     dataType: "json",
                     success: function(response) {
-
+                        $this.closest('tr').remove();
                     }
                 });
                 break;

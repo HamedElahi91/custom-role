@@ -3,11 +3,19 @@ jQuery(window).ready(function($) {
     const urlParams = new URLSearchParams(queryString);
     const params = urlParams.get('action');
 
+    //I have to check login page at the backend and front.
     if (params == 'register') {
         var container = $('#reg_password');
         $("<p class=\"custom-role-checkbox\" ><input type=\"checkbox\" name=\"fixed_customer\" id=\"fixed_customer\" >مشتری ثابت هستم</p>").insertAfter(container);
         $("<p class=\"custom-role-checkbox\" style=\"margin-top:15px;\"><input type=\"checkbox\" name=\"major_buyer\" id=\"major_buyer\" >خریدار عمده هستم</p>").insertAfter(container);
     }
+    $('.wd-switch-to-register').on('click', function() {
+        if ($('div.col-register') != 'none' && $("#fixed_customer").length == 0 && $("#major_buyer").length == 0) {
+            var container = $('#reg_password');
+            $("<p class=\"custom-role-checkbox\" ><input type=\"checkbox\" name=\"fixed_customer\" id=\"fixed_customer\" >مشتری ثابت هستم</p>").insertAfter(container);
+            $("<p class=\"custom-role-checkbox\" style=\"margin-top:15px;\"><input type=\"checkbox\" name=\"major_buyer\" id=\"major_buyer\" >خریدار عمده هستم</p>").insertAfter(container);
+        }
+    });
 
     $(document).on('click', 'input[type="checkbox"]', function() {
         $('input[type="checkbox"]').not(this).prop('checked', false);

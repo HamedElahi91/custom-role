@@ -75,6 +75,7 @@ class Custom_Role_Admin {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/custom-role-admin.css', array(), $this->version, 'all' );
 		wp_enqueue_style('jquery-datatables-css','//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css');
+		wp_enqueue_style('fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 
 
 	}
@@ -163,5 +164,35 @@ class Custom_Role_Admin {
 		}
 	}
 	
+	public function remove_customer_role_function(){
+		$customer_id = $_POST['customer_id'];
+		$customer_type = $_POST['customer_type'];
+		global $wpdb;
+		
+		switch ($customer_type){
+			case "major_buyer":
+				get_user_by( 'id', $customer_id ) -> set_role('customer');
+				$wpdb->delete($wpdb->prefix . 'major_buyer_custom_role_table', array( 'customerid' => $customer_id ));
+				wp_send_json( array(
+					'msg' => 'majo',
+					'id' => $customer_id
+				));
+				break;
+			case "fixed_customer":
+				get_user_by( 'id', $customer_id ) -> set_role('customer');
+				$wpdb->delete($wpdb->prefix . 'fixed_customer_custom_role_table', array( 'customerid' => $customer_id ));
+				wp_send_json( array(
+					'msg' => 'fix',
+					'id' => $customer_id
+				));
+				break;
+			default:
+			wp_send_json( array(
+				'msg' => 'error',
+				'id' => $customer_id
+			));
+
+		}
+	}
 }
  
