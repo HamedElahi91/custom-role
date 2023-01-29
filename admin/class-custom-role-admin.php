@@ -76,6 +76,10 @@ class Custom_Role_Admin {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/custom-role-admin.css', array(), $this->version, 'all' );
 		wp_enqueue_style('jquery-datatables-css','//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css');
 		wp_enqueue_style('fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+		wp_enqueue_style('bootstrap','https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css');
+		wp_enqueue_style('bootstrap2','https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css');
+		wp_enqueue_style('select2library','https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
+
 
 
 	}
@@ -103,7 +107,18 @@ class Custom_Role_Admin {
 		wp_enqueue_script( 'ajax_script', plugin_dir_url( __FILE__ ) . 'js/test.js', array( 'jquery' ), $this->version, true );
 		wp_localize_script( 'ajax_script', 'my_ajax_object', array( 'ajax_url' => admin_url('admin-ajax.php' ) ) );
         	wp_enqueue_script('jquery-datatables-js','//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js',array('jquery'));
-        	wp_enqueue_script('custom_role_confirm_actions', plugin_dir_url( __FILE__ ) . 'js/custom_role_confirm_requests.js' ,array('jquery'), null, true);
+        	
+		wp_enqueue_script('definition_fc_value_condition', plugin_dir_url( __FILE__ ) . 'js/definition-fc-value-condition.js', array( 'jquery' ), $this->version, true);
+		wp_localize_script('definition_fc_value_condition', 'definition_ajax_url', array('ajax_url' => admin_url('admin-ajax.php')));
+		
+		wp_enqueue_script('custom_role_confirm_actions', plugin_dir_url( __FILE__ ) . 'js/custom_role_confirm_requests.js' ,array('jquery'), null, true);
+        	wp_enqueue_script('cr-mb-add-dsicount-rules', plugin_dir_url( __FILE__ ) . 'js/cr-mb-add-discount-rules.js' ,array('jquery'));
+		wp_localize_script( 'cr-mb-add-dsicount-rules', 'add_dsicount_rules_my_ajax_object',  array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		
+		// wp_enqueue_script('cr-jq-repeater', plugin_dir_url( __FILE__ ) . 'vendors/repeatable-field-group/jquery.repeater.min.js' ,array('jquery'));
+        	wp_enqueue_script('cr-jq-repeater-frest', plugin_dir_url( __FILE__ ) . 'vendors/form-repeater/js/jquery.repeater.min.js' ,array('jquery'));
+        	wp_enqueue_script('cr-jq-bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js' ,array('jquery'), null, true);
+        	wp_enqueue_script('select2library', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js' ,array('jquery'), null, true);
 
 
 	
@@ -194,5 +209,39 @@ class Custom_Role_Admin {
 
 		}
 	}
+	
+	public function fc_search_products_data_fetch_function(){
+		
+		$search_query = esc_attr($_POST['q']) ;
+		
+		$products = get_posts( array(
+			'post_type' => 'product',
+			'numberposts' => 5,
+			'post_status' => 'publish',
+			's' => $search_query
+		   ) );
+		
+		$final=[];
+		if($products){
+			$finalIds =  array_column($products, 'ID');
+			$finalTitles= array_column($products, 'post_title');
+			$final = array_combine($finalIds,$finalTitles);			
+		}
+		
+		
+		wp_send_json($final);
+		
+	}
+
+	public function update_fc_value_condition_func(){
+		
+		header('Content-Type: application/json');
+		$result = array(
+			'msg' => 'true',
+			'val' => $_POST['my_param']
+		);
+		wp_send_json_success($result);
+	}
+
 }
  

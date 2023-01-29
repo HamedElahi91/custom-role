@@ -2,3 +2,34 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+.discount-roles {
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.discount-rules-header {
+    padding: 5px;
+    background-color: azure;
+    border: 1px solid #dfdfdf;
+}
+
+.discount-rules-footer {
+    padding: 5px;
+    background-color: azure;
+    border: 1px solid #dfdfdf;
+}
+
+.discount-rules-main {
+    padding: 20px;
+    border: 1px solid #dfdfdf;
+    border-top-style: none;
+    border-bottom-style: none;
+    background-color: white;
+}
+
+.repeater input,
+select {
+    width: 100%;
+    margin: 5px 1px !important;
+}

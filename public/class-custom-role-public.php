@@ -147,6 +147,8 @@ class Custom_Role_Public {
 		'username' =>$fixed_customer_customer->user_email
 		] );
       }
+
+	
     
 
 }

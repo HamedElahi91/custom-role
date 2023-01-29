@@ -29,7 +29,6 @@
      * practising this, we should strive to set a better example in our own work.
      */
     $(document).ready(function() {
-
         $('.action-btn').click(function(e) {
             e.preventDefault();
             var $this = $(this);
@@ -44,9 +43,11 @@
                 dataType: "json",
                 success: function(response) {
                     $this.closest('tr').remove();
-
                 }
             });
         });
+
     });
+
+
 })(jQuery);
