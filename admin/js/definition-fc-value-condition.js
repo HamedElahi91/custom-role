@@ -8,11 +8,11 @@ jQuery(document).ready(function($) {
                 url: definition_ajax_url.ajax_url,
                 data: {
                     action: "update_fc_value_condition",
-                    my_param: valueCondition
+                    value: valueCondition
                 },
                 dataType: "json",
                 success: function(response) {
-                    console.log(response.data.msg);
+                    console.log(response);
                 },
                 error: function(xhr, status, error) {
                     alert('err');

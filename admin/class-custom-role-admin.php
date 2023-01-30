@@ -236,10 +236,73 @@ class Custom_Role_Admin {
 	public function update_fc_value_condition_func(){
 		
 		header('Content-Type: application/json');
-		$result = array(
-			'msg' => 'true',
-			'val' => $_POST['my_param']
+		global $wpdb;
+		$custom_role_fixed_customer_table_name = $wpdb->prefix . 'fixed_customer_custom_role_table';
+		$condition_value = $_POST['value'];
+		$customer_args = array(
+			'role' => 'customer'
+		  );
+		$customers = get_users( $customer_args );
+		
+		$fixed_customer_args =  array(
+			'role' => 'Fixed customer'
 		);
+		$fixed_customers = get_users($fixed_customer_args);
+	
+
+		$customer_ids = []; 
+		$customernames = []; 
+		foreach($customers as $customer){
+			$total = 0;
+                  $args2 = array(
+                        'customer_id' => $customer->ID,
+                        'limit' => -1, // to get _all_ orders from this user
+                  );
+                  // call WC API
+                  $orders = wc_get_orders($args2);
+                  foreach ($orders as $order){
+                  	if($order->get_customer_id() == $customer->ID){
+                            $total+= intval($order->get_subtotal());
+                        }
+                  }
+			if($total >= $condition_value){
+				$user = get_user_by('id', $customer->ID);
+				$user->set_role('Fixed customer');
+				$wpdb->insert($custom_role_fixed_customer_table_name, array(
+					'customerid' => $user->ID,
+					'username' => $user->user_email
+				));
+				
+				
+			}	
+		}
+
+		foreach($fixed_customers as $customer){
+			$total = 0;
+                  $args2 = array(
+                        'customer_id' => $customer->ID,
+                        'limit' => -1, // to get _all_ orders from this user
+                  );
+			$orders = wc_get_orders($args2);
+
+                  foreach ($orders as $order){
+                  	if($order->get_customer_id() == $customer->ID){
+                            $total+= intval($order->get_subtotal());
+                        }
+                  }
+
+			if($total < $condition_value){
+				$user = get_user_by('id', $customer->ID);
+				$user->set_role('customer');
+				$wpdb->delete($custom_role_fixed_customer_table_name , array('customerid' => $user->ID));
+			}	
+		}
+		$result = array(
+		'msg' => 'true',
+		'val' => $customernames
+		);
+		
+		
 		wp_send_json_success($result);
 	}
 
