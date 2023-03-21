@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
         if (valueCondition != "" && !isNaN(valueCondition)) {
             $.ajax({
                 type: "post",
-                url: definition_ajax_url.ajax_url,
+                url: ajaxurl,
                 data: {
                     action: "update_fc_value_condition",
                     value: valueCondition

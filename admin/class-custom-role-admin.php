@@ -30,6 +30,7 @@ class Custom_Role_Admin {
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
+	private $ajax_handler;
 
 	/**
 	 * The version of this plugin.
@@ -49,11 +50,16 @@ class Custom_Role_Admin {
 	 */
 	public function __construct( $plugin_name, $version ) {
 
+		$this->load_dependencis();
+		$this->ajax_handler = new Custom_Role_Ajax_Handler;
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
 	}
 
+	public function load_dependencis(){
+		require_once plugin_dir_path( __FILE__ ) . 'partials/class-cr-ajax-handler.php';
+	}
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
@@ -104,58 +110,26 @@ class Custom_Role_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/custom-role-admin.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'ajax_script', plugin_dir_url( __FILE__ ) . 'js/test.js', array( 'jquery' ), $this->version, true );
-		wp_localize_script( 'ajax_script', 'my_ajax_object', array( 'ajax_url' => admin_url('admin-ajax.php' ) ) );
-        	wp_enqueue_script('jquery-datatables-js','//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js',array('jquery'));
-        	
-		wp_enqueue_script('definition_fc_value_condition', plugin_dir_url( __FILE__ ) . 'js/definition-fc-value-condition.js', array( 'jquery' ), $this->version, true);
-		wp_localize_script('definition_fc_value_condition', 'definition_ajax_url', array('ajax_url' => admin_url('admin-ajax.php')));
+		wp_enqueue_script('jquery-datatables-js','//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js',array('jquery'));
 		
-		wp_enqueue_script('custom_role_confirm_actions', plugin_dir_url( __FILE__ ) . 'js/custom_role_confirm_requests.js' ,array('jquery'), null, true);
-        	wp_enqueue_script('cr-mb-add-dsicount-rules', plugin_dir_url( __FILE__ ) . 'js/cr-mb-add-discount-rules.js' ,array('jquery'));
-		wp_localize_script( 'cr-mb-add-dsicount-rules', 'add_dsicount_rules_my_ajax_object',  array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		if(!strcmp($_SERVER['REQUEST_URI'] , '/wp-admin/admin.php?page=define-customers.php&tab=fixed-customer-definition' )){
+			wp_enqueue_script('definition_fc_value_condition', plugin_dir_url( __FILE__ ) . 'js/definition-fc-value-condition.js', array( 'jquery' ), $this->version, true);
+		}
+		
+		if(!strcmp($_SERVER['REQUEST_URI'], '/wp-admin/admin.php?page=requests.php&tab=fixed-customer-requests') || !strcmp($_SERVER['REQUEST_URI'], '/wp-admin/admin.php?page=requests.php&tab=major-buyer-requests') || !strcmp($_SERVER['REQUEST_URI'], '/wp-admin/admin.php?page=requests.php') ){
+			wp_enqueue_script('custom_role_confirm_actions', plugin_dir_url( __FILE__ ) . 'js/custom_role_confirm_requests.js' ,array('jquery'), null, true);
+		}
+		wp_enqueue_script('cr-mb-add-dsicount-rules', plugin_dir_url( __FILE__ ) . 'js/cr-mb-add-discount-rules.js' ,array('jquery'));
 		
 		// wp_enqueue_script('cr-jq-repeater', plugin_dir_url( __FILE__ ) . 'vendors/repeatable-field-group/jquery.repeater.min.js' ,array('jquery'));
-        	wp_enqueue_script('cr-jq-repeater-frest', plugin_dir_url( __FILE__ ) . 'vendors/form-repeater/js/jquery.repeater.min.js' ,array('jquery'));
-        	wp_enqueue_script('cr-jq-bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js' ,array('jquery'), null, true);
-        	wp_enqueue_script('select2library', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js' ,array('jquery'), null, true);
-
-
+		wp_enqueue_script('cr-jq-repeater-frest', plugin_dir_url( __FILE__ ) . 'vendors/form-repeater/js/jquery.repeater.min.js' ,array('jquery'));
+		wp_enqueue_script('cr-jq-bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js' ,array('jquery'), null, true);
+		wp_enqueue_script('select2library', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js' ,array('jquery'), null, true);
 	
 
 	}
 
-	public function receive_customer_requests_function(){
-		$customer_id = $_POST['customerid'];
-		$request_type = $_POST['type'];
-		$user = get_user_by( 'id', $customer_id );
-		global $wpdb;
-		switch ($request_type){
-			case "confirm_major_buyer":
-				$user->set_role('Major buyer');
-				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
-				break;
-			
-			case "refuse_major_buyer":
-				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
-				break;
-
-			case "confirm_fixed_customer":
-				$user->set_role('Fixed customer');
-				
-				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
-				break;
-			case "refuse_fixed_customer":
-				$wpdb->delete($wpdb->prefix.'customer_requests_custom_role_table', array('customerid' => $customer_id));
-				break;
-			default:
-
-		}
-		 
-		wp_json_encode( array(
-			"success" =>"yes"
-		) );
-	}
+	
 
 	public function change_user_role_manually_function($user_id, $role){
 		global $wpdb;
@@ -179,132 +153,7 @@ class Custom_Role_Admin {
 		}
 	}
 	
-	public function remove_customer_role_function(){
-		$customer_id = $_POST['customer_id'];
-		$customer_type = $_POST['customer_type'];
-		global $wpdb;
-		
-		switch ($customer_type){
-			case "major_buyer":
-				get_user_by( 'id', $customer_id ) -> set_role('customer');
-				$wpdb->delete($wpdb->prefix . 'major_buyer_custom_role_table', array( 'customerid' => $customer_id ));
-				wp_send_json( array(
-					'msg' => 'majo',
-					'id' => $customer_id
-				));
-				break;
-			case "fixed_customer":
-				get_user_by( 'id', $customer_id ) -> set_role('customer');
-				$wpdb->delete($wpdb->prefix . 'fixed_customer_custom_role_table', array( 'customerid' => $customer_id ));
-				wp_send_json( array(
-					'msg' => 'fix',
-					'id' => $customer_id
-				));
-				break;
-			default:
-			wp_send_json( array(
-				'msg' => 'error',
-				'id' => $customer_id
-			));
 
-		}
-	}
-	
-	public function fc_search_products_data_fetch_function(){
-		
-		$search_query = esc_attr($_POST['q']) ;
-		
-		$products = get_posts( array(
-			'post_type' => 'product',
-			'numberposts' => 5,
-			'post_status' => 'publish',
-			's' => $search_query
-		   ) );
-		
-		$final=[];
-		if($products){
-			$finalIds =  array_column($products, 'ID');
-			$finalTitles= array_column($products, 'post_title');
-			$final = array_combine($finalIds,$finalTitles);			
-		}
-		
-		
-		wp_send_json($final);
-		
-	}
-
-	public function update_fc_value_condition_func(){
-		
-		header('Content-Type: application/json');
-		global $wpdb;
-		$custom_role_fixed_customer_table_name = $wpdb->prefix . 'fixed_customer_custom_role_table';
-		$condition_value = $_POST['value'];
-		$customer_args = array(
-			'role' => 'customer'
-		  );
-		$customers = get_users( $customer_args );
-		
-		$fixed_customer_args =  array(
-			'role' => 'Fixed customer'
-		);
-		$fixed_customers = get_users($fixed_customer_args);
-	
-
-		$customer_ids = []; 
-		$customernames = []; 
-		foreach($customers as $customer){
-			$total = 0;
-                  $args2 = array(
-                        'customer_id' => $customer->ID,
-                        'limit' => -1, // to get _all_ orders from this user
-                  );
-                  // call WC API
-                  $orders = wc_get_orders($args2);
-                  foreach ($orders as $order){
-                  	if($order->get_customer_id() == $customer->ID){
-                            $total+= intval($order->get_subtotal());
-                        }
-                  }
-			if($total >= $condition_value){
-				$user = get_user_by('id', $customer->ID);
-				$user->set_role('Fixed customer');
-				$wpdb->insert($custom_role_fixed_customer_table_name, array(
-					'customerid' => $user->ID,
-					'username' => $user->user_email
-				));
-				
-				
-			}	
-		}
-
-		foreach($fixed_customers as $customer){
-			$total = 0;
-                  $args2 = array(
-                        'customer_id' => $customer->ID,
-                        'limit' => -1, // to get _all_ orders from this user
-                  );
-			$orders = wc_get_orders($args2);
-
-                  foreach ($orders as $order){
-                  	if($order->get_customer_id() == $customer->ID){
-                            $total+= intval($order->get_subtotal());
-                        }
-                  }
-
-			if($total < $condition_value){
-				$user = get_user_by('id', $customer->ID);
-				$user->set_role('customer');
-				$wpdb->delete($custom_role_fixed_customer_table_name , array('customerid' => $user->ID));
-			}	
-		}
-		$result = array(
-		'msg' => 'true',
-		'val' => $customernames
-		);
-		
-		
-		wp_send_json_success($result);
-	}
 
 }
  

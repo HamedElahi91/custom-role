@@ -35,6 +35,8 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'CUSTOM_ROLE_VERSION', '1.0.0' );
 
+define('CR_ADMIN', plugin_dir_path(__FILE__) . 'admin/');
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-custom-role-activator.php
@@ -61,6 +63,8 @@ register_deactivation_hook( __FILE__, 'deactivate_custom_role' );
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-custom-role.php';
+
+//require_once plugin_dir_path( __FILE__ ) . 'admin/class-custom-role-ajax-callbacks.php';
 
 
 

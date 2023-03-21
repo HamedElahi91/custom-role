@@ -34,7 +34,7 @@
             var $this = $(this);
             $.ajax({
                 type: "post",
-                url: my_ajax_object.ajax_url,
+                url: ajaxurl,
                 data: {
                     action: "remove_customer_role",
                     customer_id: $(this).data('customer-id'),

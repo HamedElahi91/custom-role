@@ -2,12 +2,11 @@ jQuery(document).ready(function($) {
     $('.action-requests').click(function(e) {
         e.preventDefault();
         var $this = $(this);
-        //console.log($(this).data('customerid'));
         switch ($(this).data('action')) {
             case "confirm_major_buyer":
                 $.ajax({
                     type: "post",
-                    url: my_ajax_object.ajax_url,
+                    url: ajaxurl,
                     data: {
                         action: "receive_customer_requests",
                         customerid: $(this).data('customerid'),
@@ -22,7 +21,7 @@ jQuery(document).ready(function($) {
             case "refuse_major_buyer":
                 $.ajax({
                     type: "post",
-                    url: my_ajax_object.ajax_url,
+                    url: ajaxurl,
                     data: {
                         action: "receive_customer_requests",
                         customerid: $(this).data('customerid'),
@@ -37,7 +36,7 @@ jQuery(document).ready(function($) {
             case "confirm_fixed_customer":
                 $.ajax({
                     type: "post",
-                    url: my_ajax_object.ajax_url,
+                    url: ajaxurl,
                     data: {
                         action: "receive_customer_requests",
                         customerid: $(this).data('customerid'),
@@ -52,7 +51,7 @@ jQuery(document).ready(function($) {
             case "refuse_fixed_customer":
                 $.ajax({
                     type: "post",
-                    url: my_ajax_object.ajax_url,
+                    url: ajaxurl,
                     data: {
                         action: "receive_customer_requests",
                         customerid: $(this).data('customerid'),

@@ -208,6 +208,9 @@ function custom_role_show_requests_func(){
 
 function custom_role_show_settings_func(){
   echo '<div style = "font-size: 200%;margin: 10px;text-align: center;background-color: white;padding: 10px;border-radius: 28px;">Settings</div>';
+  ?>
+    <input id= "test_btn" type="button" value="test">
+  <?php
 }
 
 function custom_role_define_customers_func(){

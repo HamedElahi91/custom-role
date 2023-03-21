@@ -5,7 +5,7 @@
             tags: true,
             tokenSeparators: [',', ';'],
             ajax: {
-                url: add_dsicount_rules_my_ajax_object.ajaxurl,
+                url: ajaxurl,
                 dataType: 'json',
                 type: 'post',
                 data: function(params) {

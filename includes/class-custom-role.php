@@ -113,6 +113,7 @@ class Custom_Role
 		 */
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-custom-role-i18n.php';
 
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -130,7 +131,7 @@ class Custom_Role
 		require_once(plugin_dir_path(dirname(__FILE__)) . 'admin/partials/custom-role-admin-menu.php');
 
 		require_once(plugin_dir_path(dirname(__FILE__)) . 'admin/partials/custom_role_all_roles.php');
-
+		
 		
 		$this->loader = new Custom_Role_Loader();
 	}
@@ -166,11 +167,8 @@ class Custom_Role
 
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
-		$this->loader->add_action('wp_ajax_receive_customer_requests', $plugin_admin, 'receive_customer_requests_function');
-		$this->loader->add_action('wp_ajax_remove_customer_role', $plugin_admin, 'remove_customer_role_function');
 		$this->loader->add_action('set_user_role', $plugin_admin, 'change_user_role_manually_function',10,2 ); 
-		$this->loader->add_action('wp_ajax_fc_search_products_data_fetch', $plugin_admin, 'fc_search_products_data_fetch_function' ); 
-		$this->loader->add_action('wp_ajax_update_fc_value_condition', $plugin_admin, 'update_fc_value_condition_func' ); 
+		 
 		
 		
 	}
@@ -192,7 +190,6 @@ class Custom_Role
 		$this->loader->add_action('login_enqueue_scripts', $plugin_public, 'login_enqueue_scripts');
 		$this->loader->add_action('wp_ajax_nopriv_custom_role_register_request_major_buyer', $plugin_public, 'custom_role_register_requset_major_buyer_function');
 		$this->loader->add_action('wp_ajax_nopriv_custom_role_register_request_fixed_customer', $plugin_public, 'custom_role_register_request_fixed_customer_function');
-		$this->loader->add_action('wp_ajax_nopriv_update_fc_value_condition', $plugin_public, 'update_fc_value_condition_func');
 		
 	}
 
